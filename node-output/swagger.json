@@ -1,0 +1,411 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Payment API",
+    "description" : "API для управления платежами клиентов",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/org-3f3/test_yandex_3/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "security" : [ {
+    "accessCode" : [ "read", "write" ]
+  } ],
+  "paths" : {
+    "/payments" : {
+      "get" : {
+        "summary" : "Получить все платежи клиента",
+        "description" : "Возвращает список всех платежей для указанного клиента",
+        "parameters" : [ {
+          "name" : "token_id",
+          "in" : "query",
+          "description" : "Токен клиента, платежи которого необходимо заблокировать",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "blocked",
+          "in" : "query",
+          "description" : "Фильтровать платежи по статусу блокировки",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "boolean",
+            "default" : false
+          }
+        }, {
+          "name" : "securitySchemes",
+          "in" : "header",
+          "description" : "Токен для авторизации пользователя",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Список платежей клиента",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          }
+        }
+      }
+    },
+    "/payments/block" : {
+      "post" : {
+        "tags" : [ ],
+        "summary" : "Блокировать платежи клиента",
+        "description" : "Позволяет заблокировать все платежи клиента по его ID",
+        "operationId" : "",
+        "parameters" : [ {
+          "name" : "securitySchemes",
+          "in" : "header",
+          "description" : "Токен для авторизации пользователя",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "token_id",
+          "in" : "query",
+          "description" : "Токен клиента, платежи которого необходимо заблокировать",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/payments_block_body"
+              },
+              "examples" : { }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          }
+        }
+      }
+    },
+    "/payments/unblock" : {
+      "post" : {
+        "tags" : [ ],
+        "summary" : "Разблокировать платежи клиента",
+        "operationId" : "",
+        "parameters" : [ {
+          "name" : "securitySchemes",
+          "in" : "header",
+          "description" : "Токен для авторизации пользователя",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "token_id",
+          "in" : "query",
+          "description" : "Токен клиента, платежи которого необходимо разблокировать",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/payments_unblock_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          }
+        }
+      }
+    },
+    "/payments/check" : {
+      "get" : {
+        "tags" : [ ],
+        "summary" : "Узнать статус блокировки платежей клиента",
+        "operationId" : "Проверить статус блокировки платежей клиента",
+        "parameters" : [ {
+          "name" : "securitySchemes",
+          "in" : "header",
+          "description" : "Токен для авторизации пользователя",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "token_id",
+          "in" : "query",
+          "description" : "Токен клиента, статус блокировки платежей которого необходимо проверить",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_3"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "inline_response_200" : {
+        "type" : "object",
+        "properties" : {
+          "payment_id" : {
+            "type" : "integer"
+          },
+          "amount" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "token_id" : {
+            "type" : "integer"
+          },
+          "blocked" : {
+            "type" : "boolean",
+            "default" : false
+          },
+          "payments" : {
+            "type" : "array",
+            "items" : { },
+            "x-stoplight" : {
+              "id" : "5dwhq78k7p2o4"
+            }
+          }
+        }
+      },
+      "payments_block_body" : {
+        "type" : "object",
+        "properties" : {
+          "reason" : {
+            "type" : "string",
+            "example" : "fraud",
+            "default" : "other",
+            "x-stoplight" : {
+              "id" : "q4qio4fda5j6h"
+            }
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Suspicious transaction behavior",
+            "x-stoplight" : {
+              "id" : "0kcqy3tzwnxk4"
+            }
+          },
+          "blocked_by" : {
+            "type" : "string",
+            "example" : "manual",
+            "default" : "system",
+            "x-stoplight" : {
+              "id" : "y9bwbszxtyh0l"
+            }
+          }
+        }
+      },
+      "inline_response_200_1" : {
+        "type" : "object",
+        "properties" : {
+          "token_id" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "8x3s3jwr4n4a5"
+            }
+          },
+          "blocked" : {
+            "type" : "boolean",
+            "x-stoplight" : {
+              "id" : "p2jdxy1nhcl7l"
+            }
+          },
+          "payment_threshold" : {
+            "type" : "integer",
+            "x-stoplight" : {
+              "id" : "dktbaa8o7vx43"
+            }
+          }
+        }
+      },
+      "payments_unblock_body" : {
+        "type" : "object",
+        "properties" : {
+          "blocked" : {
+            "type" : "string",
+            "example" : "false",
+            "x-stoplight" : {
+              "id" : "4444c4l5friuy"
+            }
+          }
+        }
+      },
+      "inline_response_200_2" : {
+        "type" : "object",
+        "properties" : {
+          "token_id" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "aynhx3loa38s9"
+            }
+          },
+          "blocked" : {
+            "type" : "boolean",
+            "default" : false,
+            "x-stoplight" : {
+              "id" : "et7hfp2hlsdqy"
+            }
+          }
+        }
+      },
+      "inline_response_200_3" : {
+        "type" : "object",
+        "properties" : {
+          "token_id" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "d6f4n8oca3mje"
+            }
+          },
+          "blocked" : {
+            "type" : "boolean",
+            "x-stoplight" : {
+              "id" : "tv7y5x8lwwd4t"
+            }
+          },
+          "reason" : {
+            "type" : "string",
+            "example" : "fraud",
+            "x-stoplight" : {
+              "id" : "gwd0ymkb0nrh6"
+            }
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "High refund requests",
+            "x-stoplight" : {
+              "id" : "q2t5lliu01m8j"
+            }
+          },
+          "blocked_by" : {
+            "type" : "string",
+            "example" : "system",
+            "x-stoplight" : {
+              "id" : "nrmlgcmo7o515"
+            }
+          },
+          "blocked_at" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "3zsvm8lw6qa3y"
+            }
+          },
+          "" : {
+            "type" : "string",
+            "x-stoplight" : {
+              "id" : "2e6tgu33347pv"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "accessCode" : {
+        "type" : "oauth2",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "http://example.com/oauth/auth",
+            "tokenUrl" : "http://example.com/oauth/token",
+            "scopes" : {
+              "write" : "allows modifying resources",
+              "read" : "allows reading resources"
+            }
+          }
+        }
+      }
+    }
+  }
+}
