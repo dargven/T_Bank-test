@@ -20,23 +20,12 @@
         "parameters" : [ {
           "name" : "token_id",
           "in" : "query",
-          "description" : "Токен клиента, платежи которого необходимо заблокировать",
+          "description" : "Токен клиента, платежи которого необходимо получить",
           "required" : true,
           "style" : "form",
           "explode" : true,
           "schema" : {
             "type" : "string"
-          }
-        }, {
-          "name" : "blocked",
-          "in" : "query",
-          "description" : "Фильтровать платежи по статусу блокировки",
-          "required" : false,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "boolean",
-            "default" : false
           }
         }, {
           "name" : "securitySchemes",
@@ -237,25 +226,21 @@
       "inline_response_200" : {
         "type" : "object",
         "properties" : {
-          "payment_id" : {
-            "type" : "integer"
-          },
           "amount" : {
             "type" : "number",
             "format" : "float"
           },
           "token_id" : {
-            "type" : "integer"
+            "type" : "string"
           },
-          "blocked" : {
-            "type" : "boolean",
-            "default" : false
+          "status" : {
+            "type" : "string"
           },
-          "payments" : {
-            "type" : "array",
-            "items" : { },
+          " payment_date" : {
+            "type" : "string",
+            "format" : "date-time",
             "x-stoplight" : {
-              "id" : "5dwhq78k7p2o4"
+              "id" : "ptlv02zrrx8zi"
             }
           }
         }
@@ -277,14 +262,6 @@
             "x-stoplight" : {
               "id" : "0kcqy3tzwnxk4"
             }
-          },
-          "blocked_by" : {
-            "type" : "string",
-            "example" : "manual",
-            "default" : "system",
-            "x-stoplight" : {
-              "id" : "y9bwbszxtyh0l"
-            }
           }
         }
       },
@@ -302,12 +279,6 @@
             "x-stoplight" : {
               "id" : "p2jdxy1nhcl7l"
             }
-          },
-          "payment_threshold" : {
-            "type" : "integer",
-            "x-stoplight" : {
-              "id" : "dktbaa8o7vx43"
-            }
           }
         }
       },
@@ -318,7 +289,7 @@
             "type" : "string",
             "example" : "false",
             "x-stoplight" : {
-              "id" : "4444c4l5friuy"
+              "id" : "x6v4jia6h7wi9"
             }
           }
         }
@@ -350,8 +321,9 @@
               "id" : "d6f4n8oca3mje"
             }
           },
-          "blocked" : {
-            "type" : "boolean",
+          "status" : {
+            "type" : "string",
+            "example" : "blocked",
             "x-stoplight" : {
               "id" : "tv7y5x8lwwd4t"
             }
@@ -379,14 +351,22 @@
           },
           "blocked_at" : {
             "type" : "string",
+            "format" : "date-time",
             "x-stoplight" : {
               "id" : "3zsvm8lw6qa3y"
             }
           },
-          "" : {
+          "unblocked_by" : {
             "type" : "string",
             "x-stoplight" : {
-              "id" : "2e6tgu33347pv"
+              "id" : "3cu4hw6wf56tg"
+            }
+          },
+          "ublocked_at" : {
+            "type" : "string",
+            "format" : "date-time",
+            "x-stoplight" : {
+              "id" : "ygdgspt7hxdea"
             }
           }
         }
